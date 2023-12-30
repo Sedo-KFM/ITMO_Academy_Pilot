@@ -101,67 +101,106 @@ namespace my {
 
     template<class T>
     concept ReadableCollection = requires(T t) {
-{ t.cbegin() } -> std::same_as<typename T::const_iterator>;
-{ t.cend() } -> std::same_as<typename T::const_iterator>;
-{ t.size() } -> std::convertible_to<size_t>;
-};
+        { t.cbegin() } -> std::same_as<typename T::const_iterator>;
+        { t.cend() } -> std::same_as<typename T::const_iterator>;
+        { t.size() } -> std::convertible_to<size_t>;
+    } && !std::is_same_v<T, std::string>;
 
-template<ReadableCollection T>
-ostream& operator<<(ostream& os, const T& input) {
-    os << CONTAINER_LEFT_BORDER;
-    if (input.size() > 0) {
-        auto it_last = --input.cend();
-        auto it = input.cbegin();
-        for (; it != it_last; ++it)
-            os << *it << CONTAINER_DELIMITER;
-        os << *it;
-    }
-    os << CONTAINER_RIGHT_BORDER;
-    return os;
-}
-
-template<typename T1, typename T2>
-ostream& operator<<(ostream& os, const pair<T1, T2>& input) {
-    os << input.first << CONTAINER_DELIMITER << input.second;
-    return os;
-}
-
-ll bin_power(ll a, ll b, ll mod) {
-    ll res = 1;
-    while (b) {
-        if (b & 1) {
-            res = res * a % mod;
+    template<ReadableCollection T>
+    ostream& operator<<(ostream& os, const T& input) {
+        os << CONTAINER_LEFT_BORDER;
+        if (input.size() > 0) {
+            auto it_last = --input.cend();
+            auto it = input.cbegin();
+            for (; it != it_last; ++it)
+                os << *it << CONTAINER_DELIMITER;
+            os << *it;
         }
-        a = a * a % mod;
-        b >>= 1;
+        os << CONTAINER_RIGHT_BORDER;
+        return os;
     }
-    return res;
-}
 
-ll bin_power(ll a, ll b) {
-    ll res = 1;
-    while (b) {
-        if (b & 1) {
-            res = res * a;
-        }
-        a = a * a;
-        b >>= 1;
+    template<typename T1, typename T2>
+    ostream& operator<<(ostream& os, const pair<T1, T2>& input) {
+        os << input.first << CONTAINER_DELIMITER << input.second;
+        return os;
     }
-    return res;
-}
+
+    ll bin_power(ll a, ll b, ll mod) {
+        ll res = 1;
+        while (b) {
+            if (b & 1) {
+                res = res * a % mod;
+            }
+            a = a * a % mod;
+            b >>= 1;
+        }
+        return res;
+    }
+
+    ll bin_power(ll a, ll b) {
+        ll res = 1;
+        while (b) {
+            if (b & 1) {
+                res = res * a;
+            }
+            a = a * a;
+            b >>= 1;
+        }
+        return res;
+    }
+
+    vector<int> z_function(string s) {
+        int n = (int) s.length();
+        vector<int> z(n);
+        for (int i = 1, l = 0, r = 0; i < n; ++i) {
+            if (i <= r)
+                z[i] = min(r - i + 1, z[i - l]);
+            while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+                ++z[i];
+            if (i + z[i] - 1 > r)
+                l = i, r = i + z[i] - 1;
+        }
+        return z;
+
+    }
 }
 
 using namespace my;
 
-void solution_X() {
-
+void step_1_A() {
+    CIN_INIT(int, n);
+    for (int gi = 0; gi < n; ++gi) {
+        CIN_INIT(string, s);
+        if (s.size() == 1) {
+            cout << 1 << '\n';
+            continue;
+        }
+        bool is_palindrome = true;
+        for (uint i = s.size() - 1; i != 0; --i) {
+            is_palindrome = true;
+            for (uint shift = 0; shift < (i + 1) / 2; ++shift) {
+                if (s[shift] != s[i - shift]) {
+                    is_palindrome = false;
+                    break;
+                }
+            }
+            if (is_palindrome) {
+                cout << i + 1 << '\n';
+                break;
+            }
+        }
+        if (!is_palindrome) {
+            cout << 1 << '\n';
+        }
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    solution_X();
+    step_1_A();
 
     return 0;
 }
