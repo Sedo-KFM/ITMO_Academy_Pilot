@@ -21,7 +21,7 @@
 #define CONTAINER_LEFT_BORDER "["
 #define CONTAINER_RIGHT_BORDER "]"
 #else
-#define CONTAINER_DELIMITER ""
+#define CONTAINER_DELIMITER " "
 #define CONTAINER_LEFT_BORDER ""
 #define CONTAINER_RIGHT_BORDER ""
 #endif
@@ -150,9 +150,7 @@ namespace my {
         return res;
     }
 
-#define Z_LEADING_VALUE
-
-    vector<int> straight_z_function(string s) {
+    vector<int> straight_z_function(string s, bool leading_value = true) {
         int n = (int) s.length();
         vector<int> z(n);
         for (int i = 1, l = 0, r = 0; i < n; ++i) {
@@ -163,13 +161,13 @@ namespace my {
             if (i + z[i] - 1 > r)
                 l = i, r = i + z[i] - 1;
         }
-#ifdef Z_LEADING_VALUE
-        z[0] = n;
-#endif
+        if (leading_value) {
+            z[0] = n;
+        }
         return z;
     }
 
-    vector<int> reversed_z_function(string s) {
+    vector<int> reversed_z_function(string s, bool leading_value = true) {
         int n = (int) s.length();
         vector<int> z(n);
         for (int i = n - 2, l = n - 1, r = n - 1; i >= 0; --i) {
@@ -180,9 +178,9 @@ namespace my {
             if (i - z[i] + 1 < l)
                 r = i, l = i - z[i] + 1;
         }
-#ifdef Z_LEADING_VALUE
-        z[n - 1] = n;
-#endif
+        if (leading_value) {
+            z[n - 1] = n;
+        }
         return z;
     }
 }
@@ -236,11 +234,35 @@ void step_1_B() {
     }
 }
 
+void step_1_C() {
+    CIN_INIT(uint, gn);
+    for (uint gi = 0; gi < gn; ++gi) {
+        CIN_INIT(string, t);
+        CIN_INIT(string, p);
+        if (t.size() < p.size()) {
+            cout << 0 << endl << endl;
+            continue;
+        }
+        list<uint> finds;
+        for (uint start_index = 0; start_index <= t.size() - p.size(); ++start_index) {
+            for (uint i = 0; i < p.size(); ++i) {
+                if (t[start_index + i] != p[i] && p[i] != '?') {
+                    goto s1c_incorrect;
+                }
+            }
+            finds.push_back(start_index);
+            s1c_incorrect:
+            continue;
+        }
+        cout << finds.size() << '\n' << finds << endl;
+    }
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_1_B();
+    step_1_C();
 
     return 0;
 }
