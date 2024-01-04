@@ -21,7 +21,7 @@
 #define CONTAINER_LEFT_BORDER "["
 #define CONTAINER_RIGHT_BORDER "]"
 #else
-#define CONTAINER_DELIMITER " "
+#define CONTAINER_DELIMITER ""
 #define CONTAINER_LEFT_BORDER ""
 #define CONTAINER_RIGHT_BORDER ""
 #endif
@@ -150,6 +150,8 @@ namespace my {
         return res;
     }
 
+#define Z_LEADING_VALUE
+
     vector<int> straight_z_function(string s) {
         int n = (int) s.length();
         vector<int> z(n);
@@ -161,6 +163,9 @@ namespace my {
             if (i + z[i] - 1 > r)
                 l = i, r = i + z[i] - 1;
         }
+#ifdef Z_LEADING_VALUE
+        z[0] = n;
+#endif
         return z;
     }
 
@@ -175,6 +180,9 @@ namespace my {
             if (i - z[i] + 1 < l)
                 r = i, l = i - z[i] + 1;
         }
+#ifdef Z_LEADING_VALUE
+        z[n - 1] = n;
+#endif
         return z;
     }
 }
@@ -209,11 +217,30 @@ void step_1_A() {
     }
 }
 
+void step_1_B() {
+    CIN_INIT(uint, gn);
+    for (uint gi = 0; gi < gn; ++gi) {
+        CIN_INIT(string, s);
+        uint count = 0;
+        auto fz = straight_z_function(s);
+        auto rz = reversed_z_function(s);
+        for (uint l = 0; l < s.size(); ++l) {
+            for (uint r = l; r < s.size(); ++r) {
+                uint len = r - l + 1;
+                if ((fz[l] >= len) ^ (rz[r] >= len)) {
+                    ++count;
+                }
+            }
+        }
+        cout << count << endl;
+    }
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_1_A();
+    step_1_B();
 
     return 0;
 }
