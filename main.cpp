@@ -263,7 +263,7 @@ void step_1_D() {
     for (uint gi = 0; gi < gn; ++gi) {
         CIN_INIT(string, s);
         CIN_INIT(string, t);
-        auto finds = list<ull>();
+        auto finds = list<uint>();
         if (t.size() <= s.size()) {
             for (uint start_index = 0; start_index <= s.size() - t.size(); ++start_index) {
                 for (uint i = 0; i < t.size(); ++i) {
@@ -293,11 +293,16 @@ void step_1_D() {
     }
 }
 
+void step_2_A() {
+    CIN_INIT(string, s);
+    cout << straight_z_function(s, false) << endl;
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_1_D();
+    step_2_A();
 
     return 0;
 }
