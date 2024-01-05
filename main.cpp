@@ -247,14 +247,49 @@ void step_1_C() {
         for (uint start_index = 0; start_index <= t.size() - p.size(); ++start_index) {
             for (uint i = 0; i < p.size(); ++i) {
                 if (t[start_index + i] != p[i] && p[i] != '?') {
-                    goto s1c_incorrect;
+                    goto s1c_1;
                 }
             }
             finds.push_back(start_index);
-            s1c_incorrect:
+            s1c_1:
             continue;
         }
         cout << finds.size() << '\n' << finds << endl;
+    }
+}
+
+void step_1_D() {
+    CIN_INIT(uint, gn);
+    for (uint gi = 0; gi < gn; ++gi) {
+        CIN_INIT(string, s);
+        CIN_INIT(string, t);
+        auto finds = list<ull>();
+        if (t.size() <= s.size()) {
+            for (uint start_index = 0; start_index <= s.size() - t.size(); ++start_index) {
+                for (uint i = 0; i < t.size(); ++i) {
+                    if (s[start_index + i] != t[i]) {
+                        goto s1d_1;
+                    }
+                }
+                finds.push_back(start_index + 1);
+                s1d_1:
+                continue;
+            }
+        }
+        finds.push_back(s.size() - t.size() + 2);
+
+        ull count = 0;
+        count += (s.size() - t.size() + 2) * (t.size() - 1);
+        count += (t.size() - 2) * (t.size() - 1) / 2;
+        ull prev = 0;
+        for (auto it = finds.begin(); it != finds.end(); ++it) {
+            ull width = *it - prev + t.size() - 2;
+            for (ull n = 1; width >= t.size(); ++n, --width) {
+                count += n;
+            }
+            prev = *it;
+        }
+        cout << count << endl;
     }
 }
 
@@ -262,7 +297,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_1_C();
+    step_1_D();
 
     return 0;
 }
