@@ -1,8 +1,9 @@
 #include <utility>
+#include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <array>
 #include <vector>
-#include <iostream>
 #include <queue>
 #include <sstream>
 #include <string>
@@ -298,11 +299,24 @@ void step_2_A() {
     cout << straight_z_function(s, false) << endl;
 }
 
+void step_2_B() {
+    CIN_INIT(uint, gn);
+    for (uint gi = 0; gi < gn; ++gi) {
+        CIN_INIT_S2(ull, k, j);
+        k = 0;
+        while (!(j & 1) && j) {
+            ++k;
+            j >>= 1;
+        }
+        cout << (1 << k) - 1 << endl;
+    }
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_2_A();
+    step_2_B();
 
     return 0;
 }
