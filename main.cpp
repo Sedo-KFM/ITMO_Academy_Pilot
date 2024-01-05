@@ -188,6 +188,7 @@ namespace my {
 
 using namespace my;
 
+// ✅
 void step_1_A() {
     CIN_INIT(int, n);
     for (int gi = 0; gi < n; ++gi) {
@@ -216,6 +217,7 @@ void step_1_A() {
     }
 }
 
+// ✅
 void step_1_B() {
     CIN_INIT(uint, gn);
     for (uint gi = 0; gi < gn; ++gi) {
@@ -235,6 +237,7 @@ void step_1_B() {
     }
 }
 
+// ✅
 void step_1_C() {
     CIN_INIT(uint, gn);
     for (uint gi = 0; gi < gn; ++gi) {
@@ -259,6 +262,7 @@ void step_1_C() {
     }
 }
 
+// ❌
 void step_1_D() {
     CIN_INIT(uint, gn);
     for (uint gi = 0; gi < gn; ++gi) {
@@ -294,11 +298,13 @@ void step_1_D() {
     }
 }
 
+// ✅
 void step_2_A() {
     CIN_INIT(string, s);
     cout << straight_z_function(s, false) << endl;
 }
 
+// ✅
 void step_2_B() {
     CIN_INIT(uint, gn);
     for (uint gi = 0; gi < gn; ++gi) {
@@ -312,11 +318,60 @@ void step_2_B() {
     }
 }
 
+// ❌
+void step_2_C() {
+    auto alphabet = list<char>();
+    for (char c = 'a'; c <= 'z'; ++c) {
+        alphabet.push_back(c);
+    }
+    for (char c = 'A'; c <= 'Z'; ++c) {
+        alphabet.push_back(c);
+    }
+
+    CIN_INIT(uint, gn);
+    for (uint gi = 0; gi < gn; ++gi) {
+        CIN_INIT(uint, n);
+        auto z = vector<uint>(n);
+        for (uint i = 0; i < n; ++i) {
+            CIN_INIT(uint, zi);
+            z[i] = zi;
+        }
+        if (z[0]) {
+            cout << '!' << endl;
+            continue;
+        }
+        string s = string(n, '-');
+        auto next_letter = alphabet.cbegin();
+        s[0] = *next_letter;
+        try {
+            for (uint i = 0; i < n; ++i) {
+                if (z[i]) {
+                    uint z_local = z[i];
+                    for (uint i_local = 0; i_local < z_local; ++i_local, ++i) {
+                        s[i] = s[i_local];
+                    }
+                    --i;
+                } else {
+                    s[i] = *next_letter++;
+                }
+            }
+            auto z2 = straight_z_function(s, false);
+            if (!std::equal(z2.begin(), z2.end(), z.begin())) {
+                cout << '!' << endl;
+            } else {
+                cout << s << endl;
+            }
+        } catch (const exception &e) {
+            cout << '!' << endl;
+        }
+    }
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_2_B();
+    step_2_C();
 
     return 0;
 }
