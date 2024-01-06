@@ -275,11 +275,11 @@ namespace z_function_block {
                 for (uint start_index = 0; start_index <= s.size() - t.size(); ++start_index) {
                     for (uint i = 0; i < t.size(); ++i) {
                         if (s[start_index + i] != t[i]) {
-                            goto s1d_1;
+                            goto s1d;
                         }
                     }
                     finds.push_back(start_index + 1);
-                    s1d_1:
+                    s1d:
                     continue;
                 }
             }
@@ -374,13 +374,51 @@ namespace z_function_block {
         CIN_INIT(string, s);
         cout << z_function(s, false) << endl;
     }
+
+    // ✅
+    void step_4_A() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, s);
+            auto z = z_function(s, false);
+            for (uint i = 0; i < s.size(); ++i) {
+                if (z[i] == s.size() - i) {
+                    cout << s.substr(0, i) << endl;
+                    goto s4a;
+                }
+            }
+            cout << s << endl;
+            s4a:
+            continue;
+        }
+    }
+
+    // ✅
+    void step_4_B() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, s2);
+            CIN_INIT(string, s);
+            s.append("$").append(s2).append(s2);
+            auto z = z_function(s);
+            for (uint i = s2.size() + 1; i < z.size(); ++i) {
+                if (z[i] >= s2.size()) {
+                    cout << i - s2.size() - 1 << endl;
+                    goto s4b;
+                }
+            }
+            cout << -1 << endl;
+            s4b:
+            continue;
+        }
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_3_A();
+    z_function_block::step_4_B();
 
     return 0;
 }
