@@ -412,13 +412,38 @@ namespace z_function_block {
             continue;
         }
     }
+
+    // ✅
+    void step_4_C() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, s);
+            auto z = z_function(s, false);
+            auto p = priority_queue<uint, deque<uint>, greater<>>();
+            uint p_cur_val = 1;
+            for (auto z_value : z) {
+                if (z_value) {
+                    p.push(z_value);
+                    ++p_cur_val;
+                }
+            }
+            for (uint index = 0; index < s.size(); ++index) {
+                cout << p_cur_val << ' ';
+                while (!p.empty() && p.top() <= index + 1) {
+                    p.pop();
+                    --p_cur_val;
+                }
+            }
+            cout << endl;
+        }
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_4_B();
+    z_function_block::step_4_C();
 
     return 0;
 }
