@@ -151,7 +151,7 @@ namespace my {
         return res;
     }
 
-    vector<int> straight_z_function(string s, bool leading_value = true) {
+    vector<int> z_function(string s, bool leading_value = true) {
         int n = (int) s.length();
         vector<int> z(n);
         for (int i = 1, l = 0, r = 0; i < n; ++i) {
@@ -225,7 +225,7 @@ namespace z_function_block {
         for (uint gi = 0; gi < gn; ++gi) {
             CIN_INIT(string, s);
             uint count = 0;
-            auto fz = straight_z_function(s);
+            auto fz = z_function(s);
             auto rz = reversed_z_function(s);
             for (uint l = 0; l < s.size(); ++l) {
                 for (uint r = l; r < s.size(); ++r) {
@@ -303,7 +303,7 @@ namespace z_function_block {
     // ✅
     void step_2_A() {
         CIN_INIT(string, s);
-        cout << straight_z_function(s, false) << endl;
+        cout << z_function(s, false) << endl;
     }
 
     // ✅
@@ -357,7 +357,7 @@ namespace z_function_block {
                         s[i] = *next_letter++;
                     }
                 }
-                auto z2 = straight_z_function(s, false);
+                auto z2 = z_function(s, false);
                 if (!std::equal(z2.begin(), z2.end(), z.begin())) {
                     cout << '!' << endl;
                 } else {
@@ -369,13 +369,18 @@ namespace z_function_block {
         }
     }
 
+    // ✅
+    void step_3_A() {
+        CIN_INIT(string, s);
+        cout << z_function(s, false) << endl;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_2_C();
+    z_function_block::step_3_A();
 
     return 0;
 }
