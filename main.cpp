@@ -188,190 +188,194 @@ namespace my {
 
 using namespace my;
 
-// ✅
-void step_1_A() {
-    CIN_INIT(int, n);
-    for (int gi = 0; gi < n; ++gi) {
-        CIN_INIT(string, s);
-        if (s.size() == 1) {
-            cout << 1 << '\n';
-            continue;
-        }
-        bool is_palindrome = true;
-        for (uint i = s.size() - 1; i != 0; --i) {
-            is_palindrome = true;
-            for (uint shift = 0; shift < (i + 1) / 2; ++shift) {
-                if (s[shift] != s[i - shift]) {
-                    is_palindrome = false;
+namespace z_function_block {
+
+    // ✅
+    void step_1_A() {
+        CIN_INIT(int, n);
+        for (int gi = 0; gi < n; ++gi) {
+            CIN_INIT(string, s);
+            if (s.size() == 1) {
+                cout << 1 << '\n';
+                continue;
+            }
+            bool is_palindrome = true;
+            for (uint i = s.size() - 1; i != 0; --i) {
+                is_palindrome = true;
+                for (uint shift = 0; shift < (i + 1) / 2; ++shift) {
+                    if (s[shift] != s[i - shift]) {
+                        is_palindrome = false;
+                        break;
+                    }
+                }
+                if (is_palindrome) {
+                    cout << i + 1 << '\n';
                     break;
                 }
             }
-            if (is_palindrome) {
-                cout << i + 1 << '\n';
-                break;
+            if (!is_palindrome) {
+                cout << 1 << '\n';
             }
         }
-        if (!is_palindrome) {
-            cout << 1 << '\n';
-        }
     }
-}
 
-// ✅
-void step_1_B() {
-    CIN_INIT(uint, gn);
-    for (uint gi = 0; gi < gn; ++gi) {
-        CIN_INIT(string, s);
-        uint count = 0;
-        auto fz = straight_z_function(s);
-        auto rz = reversed_z_function(s);
-        for (uint l = 0; l < s.size(); ++l) {
-            for (uint r = l; r < s.size(); ++r) {
-                uint len = r - l + 1;
-                if ((fz[l] >= len) ^ (rz[r] >= len)) {
-                    ++count;
-                }
-            }
-        }
-        cout << count << endl;
-    }
-}
-
-// ✅
-void step_1_C() {
-    CIN_INIT(uint, gn);
-    for (uint gi = 0; gi < gn; ++gi) {
-        CIN_INIT(string, t);
-        CIN_INIT(string, p);
-        if (t.size() < p.size()) {
-            cout << 0 << endl << endl;
-            continue;
-        }
-        list<uint> finds;
-        for (uint start_index = 0; start_index <= t.size() - p.size(); ++start_index) {
-            for (uint i = 0; i < p.size(); ++i) {
-                if (t[start_index + i] != p[i] && p[i] != '?') {
-                    goto s1c_1;
-                }
-            }
-            finds.push_back(start_index);
-            s1c_1:
-            continue;
-        }
-        cout << finds.size() << '\n' << finds << endl;
-    }
-}
-
-// ❌
-void step_1_D() {
-    CIN_INIT(uint, gn);
-    for (uint gi = 0; gi < gn; ++gi) {
-        CIN_INIT(string, s);
-        CIN_INIT(string, t);
-        auto finds = list<uint>();
-        if (t.size() <= s.size()) {
-            for (uint start_index = 0; start_index <= s.size() - t.size(); ++start_index) {
-                for (uint i = 0; i < t.size(); ++i) {
-                    if (s[start_index + i] != t[i]) {
-                        goto s1d_1;
+    // ✅
+    void step_1_B() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, s);
+            uint count = 0;
+            auto fz = straight_z_function(s);
+            auto rz = reversed_z_function(s);
+            for (uint l = 0; l < s.size(); ++l) {
+                for (uint r = l; r < s.size(); ++r) {
+                    uint len = r - l + 1;
+                    if ((fz[l] >= len) ^ (rz[r] >= len)) {
+                        ++count;
                     }
                 }
-                finds.push_back(start_index + 1);
-                s1d_1:
+            }
+            cout << count << endl;
+        }
+    }
+
+    // ✅
+    void step_1_C() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, t);
+            CIN_INIT(string, p);
+            if (t.size() < p.size()) {
+                cout << 0 << endl << endl;
                 continue;
             }
-        }
-        finds.push_back(s.size() - t.size() + 2);
-
-        ull count = 0;
-        count += (s.size() - t.size() + 2) * (t.size() - 1);
-        count += (t.size() - 2) * (t.size() - 1) / 2;
-        ull prev = 0;
-        for (auto it = finds.begin(); it != finds.end(); ++it) {
-            ull width = *it - prev + t.size() - 2;
-            for (ull n = 1; width >= t.size(); ++n, --width) {
-                count += n;
-            }
-            prev = *it;
-        }
-        cout << count << endl;
-    }
-}
-
-// ✅
-void step_2_A() {
-    CIN_INIT(string, s);
-    cout << straight_z_function(s, false) << endl;
-}
-
-// ✅
-void step_2_B() {
-    CIN_INIT(uint, gn);
-    for (uint gi = 0; gi < gn; ++gi) {
-        CIN_INIT_S2(ull, k, j);
-        k = 0;
-        while (!(j & 1) && j) {
-            ++k;
-            j >>= 1;
-        }
-        cout << (1 << k) - 1 << endl;
-    }
-}
-
-// ❌
-void step_2_C() {
-    auto alphabet = list<char>();
-    for (char c = 'a'; c <= 'z'; ++c) {
-        alphabet.push_back(c);
-    }
-    for (char c = 'A'; c <= 'Z'; ++c) {
-        alphabet.push_back(c);
-    }
-
-    CIN_INIT(uint, gn);
-    for (uint gi = 0; gi < gn; ++gi) {
-        CIN_INIT(uint, n);
-        auto z = vector<uint>(n);
-        for (uint i = 0; i < n; ++i) {
-            CIN_INIT(uint, zi);
-            z[i] = zi;
-        }
-        if (z[0]) {
-            cout << '!' << endl;
-            continue;
-        }
-        string s = string(n, '-');
-        auto next_letter = alphabet.cbegin();
-        s[0] = *next_letter;
-        try {
-            for (uint i = 0; i < n; ++i) {
-                if (z[i]) {
-                    uint z_local = z[i];
-                    for (uint i_local = 0; i_local < z_local; ++i_local, ++i) {
-                        s[i] = s[i_local];
+            list<uint> finds;
+            for (uint start_index = 0; start_index <= t.size() - p.size(); ++start_index) {
+                for (uint i = 0; i < p.size(); ++i) {
+                    if (t[start_index + i] != p[i] && p[i] != '?') {
+                        goto s1c_1;
                     }
-                    --i;
-                } else {
-                    s[i] = *next_letter++;
+                }
+                finds.push_back(start_index);
+                s1c_1:
+                continue;
+            }
+            cout << finds.size() << '\n' << finds << endl;
+        }
+    }
+
+    // ❌
+    void step_1_D() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, s);
+            CIN_INIT(string, t);
+            auto finds = list<uint>();
+            if (t.size() <= s.size()) {
+                for (uint start_index = 0; start_index <= s.size() - t.size(); ++start_index) {
+                    for (uint i = 0; i < t.size(); ++i) {
+                        if (s[start_index + i] != t[i]) {
+                            goto s1d_1;
+                        }
+                    }
+                    finds.push_back(start_index + 1);
+                    s1d_1:
+                    continue;
                 }
             }
-            auto z2 = straight_z_function(s, false);
-            if (!std::equal(z2.begin(), z2.end(), z.begin())) {
-                cout << '!' << endl;
-            } else {
-                cout << s << endl;
+            finds.push_back(s.size() - t.size() + 2);
+
+            ull count = 0;
+            count += (s.size() - t.size() + 2) * (t.size() - 1);
+            count += (t.size() - 2) * (t.size() - 1) / 2;
+            ull prev = 0;
+            for (auto it = finds.begin(); it != finds.end(); ++it) {
+                ull width = *it - prev + t.size() - 2;
+                for (ull n = 1; width >= t.size(); ++n, --width) {
+                    count += n;
+                }
+                prev = *it;
             }
-        } catch (const exception &e) {
-            cout << '!' << endl;
+            cout << count << endl;
         }
     }
+
+    // ✅
+    void step_2_A() {
+        CIN_INIT(string, s);
+        cout << straight_z_function(s, false) << endl;
+    }
+
+    // ✅
+    void step_2_B() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT_S2(ull, k, j);
+            k = 0;
+            while (!(j & 1) && j) {
+                ++k;
+                j >>= 1;
+            }
+            cout << (1 << k) - 1 << endl;
+        }
+    }
+
+    // ❌
+    void step_2_C() {
+        auto alphabet = list<char>();
+        for (char c = 'a'; c <= 'z'; ++c) {
+            alphabet.push_back(c);
+        }
+        for (char c = 'A'; c <= 'Z'; ++c) {
+            alphabet.push_back(c);
+        }
+
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(uint, n);
+            auto z = vector<uint>(n);
+            for (uint i = 0; i < n; ++i) {
+                CIN_INIT(uint, zi);
+                z[i] = zi;
+            }
+            if (z[0]) {
+                cout << '!' << endl;
+                continue;
+            }
+            string s = string(n, '-');
+            auto next_letter = alphabet.cbegin();
+            s[0] = *next_letter;
+            try {
+                for (uint i = 0; i < n; ++i) {
+                    if (z[i]) {
+                        uint z_local = z[i];
+                        for (uint i_local = 0; i_local < z_local; ++i_local, ++i) {
+                            s[i] = s[i_local];
+                        }
+                        --i;
+                    } else {
+                        s[i] = *next_letter++;
+                    }
+                }
+                auto z2 = straight_z_function(s, false);
+                if (!std::equal(z2.begin(), z2.end(), z.begin())) {
+                    cout << '!' << endl;
+                } else {
+                    cout << s << endl;
+                }
+            } catch (const exception& e) {
+                cout << '!' << endl;
+            }
+        }
+    }
+
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    step_2_C();
+    z_function_block::step_2_C();
 
     return 0;
 }
