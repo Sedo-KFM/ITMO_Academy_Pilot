@@ -437,13 +437,31 @@ namespace z_function_block {
             cout << endl;
         }
     }
+
+    // ✅
+    void step_4_D() {
+        CIN_INIT(string, s);
+        {
+            auto rs = s;
+            reverse(rs.begin(), rs.end());
+            s.append(rs);
+        }
+        auto z = z_function(s);
+        int z_max = 0;
+        for (uint i = z.size() - 1; i >= z.size() / 2; --i) {
+            if (z[i] + i == s.size()) {
+                z_max = z[i];
+            }
+        }
+        cout << z_max << endl;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_4_C();
+    z_function_block::step_4_D();
 
     return 0;
 }
