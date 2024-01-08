@@ -497,13 +497,51 @@ namespace z_function_block {
         }
         cout << "No" << endl;
     }
+
+    void step_4_F() {
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT_S2(string, sa, sb);
+            auto zab = z_function(sa, sb);
+            auto zba = z_function(sb, sa);
+            uint zab_max = 0;
+            uint zab_max_index = 0;
+            uint zba_max = 0;
+            uint zba_max_index = 0;
+            for (uint i = 0; i < zab.size(); ++i) {
+                if (zab[i] + i == zab.size() || zab[i] == sa.size()) {
+                    zab_max = zab[i];
+                    zab_max_index = i;
+                    break;
+                }
+            }
+            for (uint i = 0; i < zba.size(); ++i) {
+                if (zba[i] + i == zba.size() || zba[i] == sb.size()) {
+                    zba_max = zba[i];
+                    zba_max_index = i;
+                    break;
+                }
+            }
+            if (zab_max == 0 && zba_max == 0) {
+                cout << sb << sa << endl;
+            } else if (zab_max == sa.size()) {
+                cout << sb << endl;
+            } else if (zba_max == sb.size()) {
+                cout << sa << endl;
+            } else if (zba_max > zab_max) {
+                cout << sa.substr(0, zba_max_index) << sb << endl;
+            } else {
+                cout << sb.substr(0, zab_max_index) << sa << endl;
+            }
+        }
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_4_E();
+    z_function_block::step_4_F();
 
     return 0;
 }
