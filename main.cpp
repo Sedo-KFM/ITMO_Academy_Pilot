@@ -168,6 +168,21 @@ namespace my {
         return z;
     }
 
+    vector<int> z_function(string p, string s) {
+        int sn = (int) s.length();
+        vector<int> pz = z_function(p, false);
+        vector<int> z(sn);
+        for (int i = 0, l = 0, r = 0; i < sn; ++i) {
+            if (i <= r)
+                z[i] = min(r - i + 1, pz[i - l]);
+            while (i + z[i] < sn && p[z[i]] == s[i + z[i]])
+                ++z[i];
+            if (i + z[i] - 1 > r)
+                l = i, r = i + z[i] - 1;
+        }
+        return z;
+    }
+
     vector<int> reversed_z_function(string s, bool leading_value = true) {
         int n = (int) s.length();
         vector<int> z(n);
@@ -376,6 +391,14 @@ namespace z_function_block {
     }
 
     // ✅
+    void step_3_A_alt() {
+        CIN_INIT(string, s);
+        auto z = z_function(s, s);
+        z[0] = 0;
+        cout << z << endl;
+    }
+
+    // ✅
     void step_4_A() {
         CIN_INIT(uint, gn);
         for (uint gi = 0; gi < gn; ++gi) {
@@ -455,13 +478,32 @@ namespace z_function_block {
         }
         cout << z_max << endl;
     }
+
+    // ✅
+    void step_4_E() {
+        CIN_INIT_S2(string, s, sm);
+        if (s.size() != sm.size()) {
+            cout << "No" << endl;
+            return;
+        }
+        auto z = z_function(sm, s);
+        for (int i = 0; i < z.size(); ++i) {
+            if (z[i] + i == z.size()) {
+                if (equal(s.cbegin(), s.cbegin() + i, sm.crbegin())) {
+                    cout << "Yes\n" << i << endl;
+                    return;
+                }
+            }
+        }
+        cout << "No" << endl;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_4_D();
+    z_function_block::step_4_E();
 
     return 0;
 }
