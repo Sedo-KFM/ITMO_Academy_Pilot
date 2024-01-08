@@ -535,13 +535,33 @@ namespace z_function_block {
             }
         }
     }
+
+    // ❌
+    void step_4_G() {
+        CIN_INIT_S2(int, n, m);
+        auto vs = vector<uint>(n);
+        for (int i = 0; i < n; ++i) {
+            cin >> vs[i];
+        }
+        for (int i = 0; i <= n / 2; ++i) {
+            for (int il = i - 1, ir = i; il >= 0; --il, ++ir) {
+                if (vs[il] != vs[ir]) {
+                    goto s4g;
+                }
+            }
+            cout << n - i << ' ';
+            s4g:
+            continue;
+        }
+        cout << endl;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_4_F();
+    z_function_block::step_4_G();
 
     return 0;
 }
