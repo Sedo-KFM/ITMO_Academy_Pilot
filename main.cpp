@@ -555,6 +555,15 @@ namespace z_function_block {
         }
         cout << endl;
     }
+
+    // ❌
+    void step_4_H() {}
+
+    // ❌
+    void step_4_I() {}
+
+    // ❌
+    void step_4_J() {}
 }
 
 int main() {
