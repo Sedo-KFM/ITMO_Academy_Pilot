@@ -199,6 +199,75 @@ namespace my {
         }
         return z;
     }
+
+    vector<uint> suffix_array(string s) {
+        uint s_size = s.size();
+        uint eq_size = s_size + 1;
+        auto indexes = vector<uint>(eq_size);
+        iota(++indexes.begin(), indexes.end(), 0);
+        indexes[0] = s_size;
+        sort(++indexes.begin(), indexes.end(), [&](uint i, uint j) {
+            return s[i] < s[j];
+        });
+        auto eq = vector<uint>(eq_size);
+        uint cur_eq = 0;
+        for (uint i = 1; i < eq_size; ++i) {
+            if (s[indexes[i - 1]] == s[indexes[i]]) {
+                eq[indexes[i]] = cur_eq;
+            } else {
+                eq[indexes[i]] = ++cur_eq;
+            }
+        }
+
+        for (int k = 0; cur_eq < s_size; ++k) {
+            int shift = 1 << k;
+
+            auto tail = indexes.begin();
+            for (auto head = ++indexes.begin(); head != indexes.end(); ++head) {
+                if (eq[*head] != eq[*tail]) {
+                    if (head - tail > 1) {
+                        sort(tail, head, [&](uint l, uint r) {
+                            uint l_shift = l + shift;
+                            if (l_shift >= eq_size) l_shift -= eq_size;
+                            uint r_shift = r + shift;
+                            if (r_shift >= eq_size) r_shift -= eq_size;
+                            return eq[l_shift] < eq[r_shift];
+                        });
+                    }
+                    tail = head;
+                }
+            }
+            if (indexes.end() - tail > 1) {
+                sort(tail, indexes.end(), [&](uint l, uint r) {
+                    uint l_shift = l + shift;
+                    if (l_shift >= eq_size) l_shift -= eq_size;
+                    uint r_shift = r + shift;
+                    if (r_shift >= eq_size) r_shift -= eq_size;
+                    return eq[l_shift] < eq[r_shift];
+                });
+            }
+
+            auto eq_next = vector<uint>(eq.size());
+            cur_eq = 0;
+            for (int i = 1; i < eq_size; ++i) {
+                if (eq[indexes[i - 1]] == eq[indexes[i]]) {
+                    uint prev_shift = indexes[i - 1] + shift;
+                    if (prev_shift >= eq_size) prev_shift -= eq_size;
+                    uint cur_shift = indexes[i] + shift;
+                    if (cur_shift >= eq_size) cur_shift -= eq_size;
+                    if (eq[prev_shift] == eq[cur_shift]) {
+                        eq_next[indexes[i]] = cur_eq;
+                    } else {
+                        eq_next[indexes[i]] = ++cur_eq;
+                    }
+                } else {
+                    eq_next[indexes[i]] = ++cur_eq;
+                }
+            }
+            eq.swap(eq_next);
+        }
+        return indexes;
+    }
 }
 
 using namespace my;
@@ -444,7 +513,7 @@ namespace z_function_block {
             auto z = z_function(s, false);
             auto p = priority_queue<uint, deque<uint>, greater<>>();
             uint p_cur_val = 1;
-            for (auto z_value : z) {
+            for (auto z_value: z) {
                 if (z_value) {
                     p.push(z_value);
                     ++p_cur_val;
@@ -566,11 +635,20 @@ namespace z_function_block {
     void step_4_J() {}
 }
 
+namespace suffix_array_block {
+
+    // ✅
+    void step_1_A() {
+        CIN_INIT(string, s);
+        cout << suffix_array(s) << endl;
+    }
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    z_function_block::step_4_G();
+    suffix_array_block::step_1_A();
 
     return 0;
 }
