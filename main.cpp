@@ -642,13 +642,19 @@ namespace suffix_array_block {
         CIN_INIT(string, s);
         cout << suffix_array(s) << endl;
     }
+
+    // ❌
+    void step_2_A() {
+        CIN_INIT(string, s);
+        // cout << suffix_array_t_opt(s) << endl;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    suffix_array_block::step_1_A();
+    suffix_array_block::step_2_A();
 
     return 0;
 }
