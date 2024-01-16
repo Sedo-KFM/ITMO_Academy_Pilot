@@ -648,13 +648,48 @@ namespace suffix_array_block {
         CIN_INIT(string, s);
         // cout << suffix_array_t_opt(s) << endl;
     }
+
+    // ❌
+    void step_3_A() {
+        CIN_INIT(string, s);
+        auto sa = suffix_array(s);
+        auto sa_s = vector<string>(sa.size() - 1);
+        transform(++sa.cbegin(), sa.cend(), sa_s.begin(), [&s](uint s_index) {
+            return s.substr(s_index);
+        });
+        sort(sa_s.begin(), sa_s.end());
+
+        CIN_INIT(uint, gn);
+        for (uint gi = 0; gi < gn; ++gi) {
+            CIN_INIT(string, p);
+            auto t = lower_bound(sa_s.cbegin(), sa_s.cend(), p);
+            if (t == sa_s.cend()) {
+                cout << "No\n";
+                continue;
+            }
+            auto t_it = t->cbegin();
+            auto p_it = p.cbegin();
+            for (; t_it != t->cend() && p_it != p.cend(); ++t_it, ++p_it) {
+                if (*t_it != *p_it) {
+                    goto s3a;
+                }
+            }
+            if (p_it != p.cend()) {
+                goto s3a;
+            }
+            cout << "Yes\n";
+            continue;
+            s3a:
+            cout << "No\n";
+        }
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    suffix_array_block::step_2_A();
+    suffix_array_block::step_3_A();
 
     return 0;
 }
