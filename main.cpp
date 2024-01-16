@@ -653,23 +653,21 @@ namespace suffix_array_block {
     void step_3_A() {
         CIN_INIT(string, s);
         auto sa = suffix_array(s);
-        auto sa_s = vector<string>(sa.size() - 1);
-        transform(++sa.cbegin(), sa.cend(), sa_s.begin(), [&s](uint s_index) {
-            return s.substr(s_index);
-        });
-        sort(sa_s.begin(), sa_s.end());
 
         CIN_INIT(uint, gn);
         for (uint gi = 0; gi < gn; ++gi) {
             CIN_INIT(string, p);
-            auto t = lower_bound(sa_s.cbegin(), sa_s.cend(), p);
-            if (t == sa_s.cend()) {
+            auto t = lower_bound(sa.cbegin(), sa.cend(), p, [&s](auto &a, auto &b) {
+                return s.substr(a) < b;
+            });
+            if (t == sa.cend()) {
                 cout << "No\n";
                 continue;
             }
-            auto t_it = t->cbegin();
+            auto found = s.substr(*t);
+            auto t_it = found.cbegin();
             auto p_it = p.cbegin();
-            for (; t_it != t->cend() && p_it != p.cend(); ++t_it, ++p_it) {
+            for (; t_it != found.cend() && p_it != p.cend(); ++t_it, ++p_it) {
                 if (*t_it != *p_it) {
                     goto s3a;
                 }
